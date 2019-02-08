@@ -19,37 +19,37 @@ void encounterMonster(MonsterInfo &mon){
 /*
 void action(){
     std::string action;
-    std::cout << "atteck / heal" << '\n';
+    std::cout << "attack / heal" << '\n';
     std::getline(std::cin, action);
     if (action == "heal" || action == "y")
 }
 */
 
-void cntratteck(MonsterInfo &mon, Player &pla){
+void cntrattack(MonsterInfo &mon, Player &pla){
   if (mon.mHealth > 0){
     pla.health -= mon.mStrength;
-    std::cout << "you were attecked!  " << "-" << mon.mStrength << '\n';
+    std::cout << "you were attacked!  " << "-" << mon.mStrength << '\n';
   }
-}  // void cntratteck
+}  // void cntrattack
 
-void atteck(MonsterInfo &mon, Player &pla){
-  std::string atteck;
+void attack(MonsterInfo &mon, Player &pla){
+  std::string attack;
   bool deal;
-  std::cout << "would you atteck? yes/no\n";
-  std::getline(std::cin, atteck);
+  std::cout << "would you attack? yes/no\n";
+  std::getline(std::cin, attack);
 
-  if (atteck == "yes" || atteck == "y"){
+  if (attack == "yes" || attack == "y"){
     deal = true;
   }
 
-  else if (atteck == "no" || atteck == "n"){
+  else if (attack == "no" || attack == "n"){
     deal = false;
   }
 
   if (deal == true){
-    std::cout << "you attecked!   " << "-" << pla.strength << '\n';
+    std::cout << "you attacked!   " << "-" << pla.strength << '\n';
     mon.mHealth -= pla.strength;
-    cntratteck(mon, pla);
+    cntrattack(mon, pla);
 
     if (mon.mHealth <= 0){
       std::cout << "you win! \n";
@@ -61,26 +61,26 @@ void atteck(MonsterInfo &mon, Player &pla){
   }
   else if (deal == false){
     std::cout << "nothing happened... \n";
-    cntratteck(mon, pla);
+    cntrattack(mon, pla);
   }
-}  // void atteck()
+}  // void attack()
 
-void ninjaAtteck(MonsterInfo &mon, Player &pla){
-  std::string atteck;
+void ninjaAttack(MonsterInfo &mon, Player &pla){
+  std::string attack;
   bool deal;
-  std::cout << "would you atteck? yes/no \t |";
-  std::getline(std::cin, atteck);
+  std::cout << "would you attack? yes/no \t |";
+  std::getline(std::cin, attack);
 
-  if (atteck == "yes" || atteck == "y"){
+  if (attack == "yes" || attack == "y"){
     deal = true;
   }
 
-  else if (atteck == "no" || atteck == "n"){
+  else if (attack == "no" || attack == "n"){
     deal = false;
   }
 
   if (deal == true){
-    std::cout << "you attecked!   " << "-" << pla.strength << '\n';
+    std::cout << "you attacked!   " << "-" << pla.strength << '\n';
     mon.mHealth -= pla.strength;
 
     if (mon.mHealth <= 0){
@@ -88,19 +88,58 @@ void ninjaAtteck(MonsterInfo &mon, Player &pla){
       pla.strength += 4;
       pla.health += 15;
     }
-    cntratteck(mon, pla);
+    cntrattack(mon, pla);
   }
   else if (deal == false){
     std::cout << "concentrating... \n";
     int dodge = std::rand() % 10 + 1;
     if (dodge == 1 || dodge == 2 || dodge == 3 || dodge == 4 || dodge == 5) {
-        std::cout << "you dodged atteck! you counterattecked! \n";
+        std::cout << "you dodged attack! you counterattacked! \n";
         mon.mHealth -= pla.strength*2;
         std::cout << "-" << pla.strength*2 << std::endl;
     }
-    else {std::cout << "failed to dodge..." << std::endl; cntratteck(mon, pla);}
+    else {std::cout << "failed to dodge..." << std::endl; cntrattack(mon, pla);}
   } 
-}  // function ninjaAtteck
+}  // function ninjaAttack
+
+void mageAttack(MonsterInfo &mon, Player &pla){
+  std::string attack;
+  bool deal;
+  std::string spell;
+  std::cout << "would you attack? yes/no \t |";
+  std::getline(std::cin, attack);
+
+  if (attack == "yes" || attack == "y"){
+    deal = true;
+  }
+
+  else if (attack == "no" || attack == "n"){
+    deal = false;
+  }
+
+  if (deal == true){
+    std::cout << "fireball/blind/sleep/protect" << '\n';
+    std::getline(std::cin, spell); 
+    if (spell == "fire")
+
+    if (mon.mHealth <= 0){
+      std::cout << "you win! \n";
+      pla.strength += 4;
+      pla.health += 15;
+    }
+    cntrattack(mon, pla);
+  }
+  else if (deal == false){
+    std::cout << "concentrating... \n";
+    int dodge = std::rand() % 10 + 1;
+    if (dodge == 1 || dodge == 2 || dodge == 3 || dodge == 4 || dodge == 5) {
+        std::cout << "you dodged attack! you counterattacked! \n";
+        mon.mHealth -= pla.strength*2;
+        std::cout << "-" << pla.strength*2 << std::endl;
+    }
+    else {std::cout << "failed to dodge..." << std::endl; cntrattack(mon, pla);}
+  } 
+}  // function mageAttack
 
 void heal(Player &pla, int &healTime){
   std::string action;
@@ -144,8 +183,8 @@ int main(){
                 statusMonster(mon);
                 pla.statusPlayer();
                 heal(pla, healTime);
-                if (pla.role == "ninja") {ninjaAtteck(mon, pla);}
-                else {atteck(mon, pla);}
+                if (pla.role == "ninja") {ninjaAttack(mon, pla);}
+                else {attack(mon, pla);}
             }
             break;
           }
@@ -165,8 +204,8 @@ int main(){
               statusMonster(mon);
               pla.statusPlayer();
               heal(pla, healTime);
-              if (pla.role == "ninja") {ninjaAtteck(mon, pla);}
-              else {atteck(mon, pla);}
+              if (pla.role == "ninja") {ninjaAttack(mon, pla);}
+              else {attack(mon, pla);}
             }
             break;
           }
@@ -186,8 +225,8 @@ int main(){
               statusMonster(mon);
               pla.statusPlayer();
               heal(pla, healTime);
-              if (pla.role == "ninja") {ninjaAtteck(mon, pla);}
-              else {atteck(mon, pla);}
+              if (pla.role == "ninja") {ninjaAttack(mon, pla);}
+              else {attack(mon, pla);}
             }
             break;
           }
@@ -207,8 +246,8 @@ int main(){
               statusMonster(mon);
               pla.statusPlayer();
               heal(pla, healTime);
-              if (pla.role == "ninja") {ninjaAtteck(mon, pla);}
-              else {atteck(mon, pla);}
+              if (pla.role == "ninja") {ninjaAttack(mon, pla);}
+              else {attack(mon, pla);}
             }
             break;
           }
@@ -227,8 +266,8 @@ int main(){
         printDragon();
         statusMonster(mon);
         pla.statusPlayer();
-        if (pla.role == "ninja") {ninjaAtteck(mon, pla);}
-        else {atteck(mon, pla);}
+        if (pla.role == "ninja") {ninjaAttack(mon, pla);}
+        else {attack(mon, pla);}
       }
     }
   }  // if die

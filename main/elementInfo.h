@@ -27,14 +27,16 @@ class Player {
       std::cout << "wellcome! what's your name: \t\t\t |";
       std::getline(std::cin, name);
       std::cout << "select your role( warrior/shieldsman/ninja ): \n";
-      std::cout << "warrior: high atteck, moderate health \n";
-      std::cout << "shieldsman: high health, low atteck, heal every round \n";
-      std::cout << "ninja: moderate atteck, moderate atteck, counteratteck if dodge atteck \n";
+      std::cout << "warrior:      high attack, moderate health \n";
+      std::cout << "shieldsman:   high health, low attack, heal every round \n";
+      std::cout << "ninja:        moderate attack, moderate attack, counterattack if dodge attack \n";
+      std::cout << "mage:         low health, high attack, attack/blind/sleep enemy or make protection \n";
       std::cout << "\t |";
       std::getline(std::cin, role);
       if (role == "warrior") {health = 120; strength = 40;}
       else if (role == "shieldsman") {health = 150; strength = 20;}
-      else if (role ==  "ninja") {health = 100; strength = 25;}
+      else if (role == "ninja") {health = 100; strength = 25;}
+      else if (role == "mage") {health = 80; strength = 50;}
       else if (role == "master") {health = 1; strength = 1000;}
     }
     
