@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <ctime>
 #include "monsterPrint.h"
-#include "elementInfo.h"
+#include "unitInfo.h"
+#include "attack.h"
 
 void statusMonster(MonsterInfo &mon){
   std::cout << "-------------------------------------------------------" << '\n';
@@ -11,12 +12,13 @@ void statusMonster(MonsterInfo &mon){
   std::cout << "health: " << mon.mHealth << '\n';
 }
 
+/*
 void encounterMonster(MonsterInfo &mon){
-  std::cout << "-------------------------------------------------------" << '\n';
+  std::cout << "-------------------------------------------------------" << '\n'  
   std::cout << "you encountered "<< mon.mName << " <" << mon.mType << "> !" << '\n';
   std::cout << "health: " << mon.mHealth << '\n';
 }
-/*
+
 void action(){
     std::string action;
     std::cout << "attack / heal" << '\n';
@@ -24,7 +26,7 @@ void action(){
     if (action == "heal" || action == "y")
 }
 */
-
+/* moving
 void cntrattack(MonsterInfo &mon, Player &pla){
   if (mon.mHealth > 0){
     pla.health -= mon.mStrength;
@@ -120,12 +122,15 @@ void mageAttack(MonsterInfo &mon, Player &pla){
   if (deal == true){
     std::cout << "fireball/blind/sleep/protect" << '\n';
     std::getline(std::cin, spell); 
-    if (spell == "fire")
+    if (spell == "fire") {std::cout << "fireball! -"  << pla.strength << '\n'; mon.mHealth -= pla.strength;}
+    else if (spell == "blind") {std::cout << "blind! -" << pla.strength << '\n'; /*mHitPercent = 50;}
+    else if (spell == "sleep") {std::cout << "sleep! -" << pla.strength << '\n'; /*mHit = false;}
+    else if (spell == "protect") {std::cout << "magic shield! -" << pla.strength << '\n'; /*shield = 25;}
 
     if (mon.mHealth <= 0){
       std::cout << "you win! \n";
       pla.strength += 4;
-      pla.health += 15;
+      pla.health += 10;
     }
     cntrattack(mon, pla);
   }
@@ -140,6 +145,7 @@ void mageAttack(MonsterInfo &mon, Player &pla){
     else {std::cout << "failed to dodge..." << std::endl; cntrattack(mon, pla);}
   } 
 }  // function mageAttack
+*/
 
 void heal(Player &pla, int &healTime){
   std::string action;
@@ -156,9 +162,20 @@ void heal(Player &pla, int &healTime){
 int main(){
   Player pla;
   MonsterInfo mon;
-  std::string name_ = pla.name;
-  int *health_ = &pla.health;
+  Attack atk;
+  pla.blindLimit = 3;
+  pla.sleepLimit = 2; 
+  pla.protectLimit = 4;
   pla.getPlayer();
+  /*
+  int z;
+  try{
+    z = pla.getPlayer();
+    std::cout << z << '\n';
+  } catch(const char *msg){
+    std::cerr << msg << '\n';
+  }
+  */
   pla.statusPlayer();
   std::srand(std::time(nullptr));
   int healTime = 4;
@@ -177,14 +194,15 @@ int main(){
              std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
              while (mon.mHealth > 0){
                 if (pla.deathCheck() == true){break;}
-                if (pla.role == "shieldsman"){health_ += 10;}
+                if (pla.role == "shieldsman"){pla.health += 10;}
                 pla.deathCheck();
                 printSlime();
                 statusMonster(mon);
                 pla.statusPlayer();
                 heal(pla, healTime);
-                if (pla.role == "ninja") {ninjaAttack(mon, pla);}
-                else {attack(mon, pla);}
+                if (pla.role == "ninja") {atk.ninjaAttack(mon, pla);}
+                else if (pla.role == "mage") {atk.mageAttack(mon, pla);}
+                else {atk.attack(mon, pla);}
             }
             break;
           }
@@ -198,14 +216,15 @@ int main(){
             std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
             while (mon.mHealth > 0){
               if (pla.deathCheck() == true){break;}
-              if (pla.role == "shieldsman"){health_ += 10;}
+              if (pla.role == "shieldsman"){pla.health += 10;}
               pla.deathCheck();
               printSpider();
               statusMonster(mon);
               pla.statusPlayer();
               heal(pla, healTime);
-              if (pla.role == "ninja") {ninjaAttack(mon, pla);}
-              else {attack(mon, pla);}
+              if (pla.role == "ninja") {atk.ninjaAttack(mon, pla);}
+              else if (pla.role == "mage") {atk.mageAttack(mon, pla);}
+              else {atk.attack(mon, pla);}
             }
             break;
           }
@@ -219,14 +238,15 @@ int main(){
             std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
             while (mon.mHealth > 0){
               if (pla.deathCheck() == true){break;}
-              if (pla.role == "shieldsman"){health_ += 10;}
+              if (pla.role == "shieldsman"){pla.health += 10;}
               pla.deathCheck();
               printOrc();
               statusMonster(mon);
               pla.statusPlayer();
               heal(pla, healTime);
-              if (pla.role == "ninja") {ninjaAttack(mon, pla);}
-              else {attack(mon, pla);}
+              if (pla.role == "ninja") {atk.ninjaAttack(mon, pla);}
+              else if (pla.role == "mage") {atk.mageAttack(mon, pla);}
+              else {atk.attack(mon, pla);}
             }
             break;
           }
@@ -240,14 +260,15 @@ int main(){
             std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
             while (mon.mHealth > 0){
               if (pla.deathCheck() == true){break;}
-              if (pla.role == "shieldsman"){health_ += 10;}
+              if (pla.role == "shieldsman"){pla.health += 10;}
               pla.deathCheck();
               printOgre();
               statusMonster(mon);
               pla.statusPlayer();
               heal(pla, healTime);
-              if (pla.role == "ninja") {ninjaAttack(mon, pla);}
-              else {attack(mon, pla);}
+              if (pla.role == "ninja") {atk.ninjaAttack(mon, pla);}
+              else if (pla.role == "mage") {atk.mageAttack(mon, pla);}
+              else {atk.attack(mon, pla);}
             }
             break;
           }
@@ -261,13 +282,14 @@ int main(){
       std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<< \n";
       while (mon.mHealth > 0){
         if (pla.deathCheck() == true){break; }
-        if (pla.role == "shieldsman"){health_ += 10;}
+        if (pla.role == "shieldsman"){pla.health += 10;}
         pla.deathCheck();
         printDragon();
         statusMonster(mon);
         pla.statusPlayer();
-        if (pla.role == "ninja") {ninjaAttack(mon, pla);}
-        else {attack(mon, pla);}
+        if (pla.role == "ninja") {atk.ninjaAttack(mon, pla);}
+        else if (pla.role == "mage") {atk.mageAttack(mon, pla);}
+        else {atk.attack(mon, pla);}
       }
     }
   }  // if die

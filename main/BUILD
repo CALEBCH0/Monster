@@ -7,14 +7,21 @@ cc_library(
 
 cc_library(
   name = "info",
-  hdrs = ["elementInfo.h"],
+  hdrs = ["unitInfo.h"],
 )
 
+cc_library(
+  name = "attack",
+  hdrs = ["attack.h"],
+  deps = [":info"],
+)
 
 cc_binary(
   name = "monster",
   srcs = ["monster.cpp"],
-  deps = [":print", 
-	  ":info",
-	 ],
+  deps = [
+      ":print", 
+      ":info",
+      ":attack",
+  ],
 )
